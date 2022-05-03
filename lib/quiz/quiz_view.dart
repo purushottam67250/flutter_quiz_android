@@ -45,7 +45,7 @@ class _QuizViewState extends State<QuizView> with TickerProviderStateMixin {
     controller.addStatusListener(
       (status) {
         if (status == AnimationStatus.dismissed) {
-          widget.timeout();
+          // widget.timeout();
         }
       },
     );
@@ -73,90 +73,116 @@ class _QuizViewState extends State<QuizView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            ColorConstants.purple,
-            ColorConstants.pink,
-            ColorConstants.pink,
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 10,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const SizedBox(
-                  height: 50,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const Text(
-                          'Mathematics Quiz',
-                          style: TextStyle(
-                            color: Colors.white38,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        QuestionIndexWidget(index: widget.questionIndex + 1),
-                      ],
-                    ),
-                    TimerWidget(
-                      controller: controller,
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                QuestionCounterWidget(
-                  questionIndex: widget.questionIndex,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 236, 230, 230),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(
-                    20,
+    final screenSize = MediaQuery.of(context).size;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: Stack(
+            children: [
+              Container(
+                height: screenSize.height * 0.38,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      ColorConstants.primaryBlue,
+                      ColorConstants.primaryBlue,
+                      ColorConstants.primaryBlue50,
+                    ],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
                   ),
-                  topRight: Radius.circular(
-                    20,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Text(
+                                'Mathematics Quiz',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              QuestionIndexWidget(
+                                  index: widget.questionIndex + 1),
+                            ],
+                          ),
+                          TimerWidget(
+                            controller: controller,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      QuestionCounterWidget(
+                        questionIndex: widget.questionIndex,
+                      ),
+                    ],
                   ),
                 ),
               ),
+              Positioned(
+                bottom: (screenSize.height * 0.20) / 8,
+                left: 20,
+                right: 20,
+                child: AppContainer(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      20,
+                    ),
+                  ),
+                  blurRadius: 5,
+                  spreadRadius: 3,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          25,
+                        ),
+                      ),
+                    ),
+                    constraints: BoxConstraints(
+                      minHeight: screenSize.height * 0.20,
+                    ),
+                    child: QuestionWidget(
+                      question: widget.question.question,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Column(
+          children: [
+            Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  QuestionWidget(
-                    question: widget.question.question,
-                  ),
                   // answers options here
                   ...widget.question.incorrectAnswers
                       .map(
@@ -175,15 +201,15 @@ class _QuizViewState extends State<QuizView> with TickerProviderStateMixin {
                 ],
               ),
             ),
-          ),
-          ButtonSection(
-            isNextEnabled: widget.question.answeredOption.isNotEmpty,
-            isLast: widget.question.index == widget.totalQuestions - 1,
-            onNext: _onNext,
-            onQuit: widget.onQuit,
-          ),
-        ],
-      ),
+            ButtonSection(
+              isNextEnabled: widget.question.answeredOption.isNotEmpty,
+              isLast: widget.question.index == widget.totalQuestions - 1,
+              onNext: _onNext,
+              onQuit: widget.onQuit,
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -221,7 +247,7 @@ class TimerWidget extends StatelessWidget {
                     painter: QuizTimerPainter(
                       animation: controller,
                       backgroundColor: Colors.white30,
-                      color: ColorConstants.purple,
+                      color: ColorConstants.pink,
                     ),
                   );
                 },
@@ -240,7 +266,7 @@ class TimerWidget extends StatelessWidget {
                     opacity: opacity.toDouble(),
                     child: Icon(
                       Icons.timer,
-                      color: ColorConstants.purple,
+                      color: ColorConstants.pink,
                       size: 55,
                     ),
                   );

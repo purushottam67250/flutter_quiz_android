@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_android/common/constants/color_constants.dart';
 
 class ButtonSection extends StatelessWidget {
   const ButtonSection({
@@ -17,13 +18,10 @@ class ButtonSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Color.fromARGB(255, 236, 230, 230),
-      ),
       child: Padding(
         padding: const EdgeInsets.only(
-          bottom: 15,
-          top: 15,
+          bottom: 20,
+          top: 20,
         ),
         child: Row(
           mainAxisAlignment: (isLast && isNextEnabled)
@@ -32,11 +30,11 @@ class ButtonSection extends StatelessWidget {
           children: [
             if (!(isLast && isNextEnabled))
               Container(
-                margin: const EdgeInsets.only(left: 15),
+                margin: const EdgeInsets.only(left: 20),
                 child: TextButton.icon(
                   icon: const Icon(
                     Icons.power_settings_new_rounded,
-                    color: Colors.black38,
+                    color: Colors.white,
                     size: 25,
                   ),
                   onPressed: onQuit,
@@ -51,7 +49,7 @@ class ButtonSection extends StatelessWidget {
                       ),
                     ),
                     backgroundColor: MaterialStateProperty.all(
-                      Color.fromARGB(218, 201, 200, 200),
+                      ColorConstants.pink,
                     ),
                     padding: MaterialStateProperty.all(
                       const EdgeInsets.symmetric(
@@ -63,7 +61,7 @@ class ButtonSection extends StatelessWidget {
                   label: const Text(
                     'Quit',
                     style: TextStyle(
-                      color: Colors.black38,
+                      color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                     ),
@@ -71,17 +69,17 @@ class ButtonSection extends StatelessWidget {
                 ),
               ),
             Container(
-              margin: const EdgeInsets.only(right: 15),
+              margin: const EdgeInsets.only(right: 20),
               child: MaterialButton(
-                  color: const Color(0xff107FEB),
-                  disabledColor: const Color(0xff107FEB).withOpacity(0.25),
+                  color: ColorConstants.primaryBlue,
+                  disabledColor: ColorConstants.primaryBlue50,
                   elevation: 5,
                   disabledElevation: 0,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 10,
                   ),
-                  textColor: Colors.black87,
+                  textColor: Colors.white,
                   disabledTextColor: Colors.black38,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
@@ -98,6 +96,7 @@ class ButtonSection extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
+                          color: isNextEnabled ? Colors.white : Colors.white70,
                         ),
                       ),
                       const SizedBox(
@@ -105,7 +104,7 @@ class ButtonSection extends StatelessWidget {
                       ),
                       Icon(
                         Icons.next_plan_outlined,
-                        color: isNextEnabled ? Colors.black87 : Colors.black26,
+                        color: isNextEnabled ? Colors.white : Colors.white70,
                         size: 25,
                       ),
                     ],

@@ -12,16 +12,18 @@ class QuestionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       padding: EdgeInsets.symmetric(
         horizontal: 20,
       ),
       margin: const EdgeInsets.symmetric(vertical: 40),
       child: Text(
         question,
+        textAlign: TextAlign.center,
         style: const TextStyle(
           color: Colors.black87,
           fontSize: 20,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
@@ -58,7 +60,7 @@ class QuestionCounterWidget extends StatelessWidget {
           return AppContainer(
             width: (screenSize.width - 40 - (19 * 2)) / 20,
             noShadow: true,
-            color: index <= questionIndex ? Colors.white : Colors.blueGrey,
+            color: index <= questionIndex ? Colors.white : Colors.white30,
           );
         },
       ),
@@ -80,7 +82,7 @@ class QuestionIndexWidget extends StatelessWidget {
       text: TextSpan(
         text: 'Question ',
         style: TextStyle(
-          color: Colors.white54,
+          color: Colors.white70,
           fontSize: 20,
           fontWeight: FontWeight.w700,
         ),
@@ -96,7 +98,7 @@ class QuestionIndexWidget extends StatelessWidget {
           TextSpan(
             text: ' / ',
             style: TextStyle(
-              color: Colors.white54,
+              color: Colors.white70,
               fontSize: 20,
               fontWeight: FontWeight.w700,
             ),
@@ -104,7 +106,7 @@ class QuestionIndexWidget extends StatelessWidget {
           TextSpan(
             text: '20',
             style: TextStyle(
-              color: Colors.white54,
+              color: Colors.white70,
               fontSize: 20,
               fontWeight: FontWeight.w700,
             ),

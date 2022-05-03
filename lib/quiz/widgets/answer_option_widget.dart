@@ -30,15 +30,14 @@ class AnswerOptionWidget extends StatelessWidget {
       blurRadius: 1,
       spreadRadius: 1,
       radius: 25,
-      shadowColor: selected ? const Color(0x9A26A08C) : null,
+      shadowColor: selected ? ColorConstants.primaryBlue50 : null,
       child: AppContainer(
-        color: ColorConstants.backgroundColor,
         margin: const EdgeInsets.all(2),
         noShadow: true,
         radius: 25,
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            vertical: 12,
+            vertical: 15,
             horizontal: 20,
           ),
           child: Text(
@@ -47,9 +46,9 @@ class AnswerOptionWidget extends StatelessWidget {
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              color: Colors.white54,
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
+              color: Colors.black87,
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),

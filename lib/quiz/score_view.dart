@@ -39,9 +39,8 @@ class ScoreView extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            ColorConstants.purple,
-            ColorConstants.pink,
-            ColorConstants.pink,
+            ColorConstants.primaryBlue,
+            ColorConstants.primaryBlue,
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
