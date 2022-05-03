@@ -1,12 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quiz_android/app/entities/base_state.dart';
 import 'package:quiz_android/app/entities/failure.dart';
+import 'package:quiz_android/quiz/entities/quiz_entities.dart';
 import 'package:quiz_android/repositories/app_repository.dart';
-
-class QuizCategory {
-  final String name;
-  const QuizCategory({required this.name});
-}
 
 final categoriesList = StateProvider<List<QuizCategory>>((ref) {
   return <QuizCategory>[];

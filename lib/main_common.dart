@@ -21,7 +21,6 @@ Future<void> mainCommon(AppEnvironment environment) async {
     () => runApp(
       ProviderScope(
         observers: [Logger()],
-        overrides: [environmentController.overrideWithValue(environment)],
         child: const App(
             // appEnvironment: environment,
             ),

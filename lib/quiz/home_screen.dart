@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quiz_android/app/entities/base_state.dart';
+import 'package:quiz_android/app_setup/firebase/auth_controller.dart';
 import 'package:quiz_android/app_setup/routes/navigator_routes.dart';
 import 'package:quiz_android/common/constants/color_constants.dart';
 import 'package:quiz_android/common/constants/string_constants.dart';
 import 'package:quiz_android/common/widgets/app_container.dart';
-import 'package:quiz_android/quiz/category_controller.dart';
+import 'package:quiz_android/util.dart';
+
+final logOutController =
+    StateNotifierProvider<AuthController, BaseState>(authController);
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,7 +22,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    ref.read(catController.notifier).getAllCategories();
+    // ref.read(catController.notifier).getAllCategories();
   }
 
   Widget _quizCategoryBuilder(BuildContext context, int index) {
@@ -76,13 +80,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 }
 
-class HomeHeaderWidget extends StatelessWidget {
+class HomeHeaderWidget extends ConsumerWidget {
   const HomeHeaderWidget({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final greeting = getGreeting();
     return Column(
       children: [
         const SizedBox(
@@ -100,15 +105,16 @@ class HomeHeaderWidget extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(
-                      FontAwesomeIcons.sun,
-                      size: 15,
+                    Image.asset(
+                      'assets/images/${greeting.toLowerCase()}.png',
+                      width: 20,
+                      height: 15,
                     ),
                     const SizedBox(
                       width: 10,
                     ),
                     Text(
-                      'Good Morning'.toUpperCase(),
+                      'GOOD ${greeting.toUpperCase()}',
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 15,
@@ -134,9 +140,14 @@ class HomeHeaderWidget extends StatelessWidget {
             const SizedBox(
               width: 20,
             ),
-            const CircleAvatar(
-              maxRadius: 25,
-              minRadius: 25,
+            InkWell(
+              onTap: () {
+                ref.read(logOutController.notifier).logOut();
+              },
+              child: const CircleAvatar(
+                maxRadius: 25,
+                minRadius: 25,
+              ),
             ),
             const SizedBox(
               width: 20,
