@@ -1,4 +1,6 @@
-import 'package:flutter/painting.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quiz_android/app/app.dart';
 import 'package:quiz_android/common/constants/color_constants.dart';
 
 String getGreeting() {
@@ -22,3 +24,12 @@ final Shader linearGradient = LinearGradient(
     ColorConstants.pink,
   ],
 ).createShader(Rect.fromLTWH(0.0, 0.0, 10.0, 80.0));
+
+void handleNavigation(WidgetRef ref, String homeRoute) {
+  WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    final currentState = ref.read(navigatorKey).currentState;
+    if (currentState != null) {
+      currentState.pushNamedAndRemoveUntil(homeRoute, (route) => false);
+    }
+  });
+}

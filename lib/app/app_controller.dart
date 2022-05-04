@@ -1,61 +1,55 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quiz_android/app/entities/app_entities.dart';
 import 'package:quiz_android/app_setup/objectbox/obdb.dart';
 import 'package:quiz_android/authentication/entities/session.dart';
 
-// final userProvider = Provider.autoDispose<Session>((ref) {
-//   final u = ref.watch(appController.notifier).state;
+class ThemeStateNotifier extends ChangeNotifier {
+  //
+  bool isDarkMode = false;
 
-//   return u.maybeMap(
-//     authenticated: (s) => s.data,
-//     orElse: () => Session(
-//       token: '',
-//       niceName: '',
-//       displayName: '',
-//       userFirstName: '',
-//       userLastName: '',
-//       email: '',
-//     ),
-//   );
-// });
+  void updateTheme() {
+    isDarkMode = !isDarkMode;
+    notifyListeners();
+  }
+}
 
 ///
 final appController =
-    StateNotifierProvider<AppStateNotifier, AppState<Session>>((ref) {
+    ChangeNotifierProvider.family<AppStateNotifier, String>((ref, id) {
   return AppStateNotifier(ref.read)..appStarted();
 });
 
-class AppStateNotifier extends StateNotifier<AppState<Session>> {
+class AppStateNotifier extends ChangeNotifier {
   ///
-  AppStateNotifier(this._read) : super(const AppState.started());
+  AppStateNotifier(this._read) : super();
 
   final Reader _read;
+  AppState<Session> state = AppState<Session>.started();
 
   Future<void> appStarted() async {
     final _db = _read(obDbProvider);
     await _db.init();
     final session = _read(obDbProvider).loggedUser();
     if (session != null) {
-      Future.delayed(Duration.zero, () {
-        state = AppState.authenticated(session);
-      });
+      updateAppState(AppState.authenticated(session, isNavigate: true));
     } else {
-      Future.delayed(Duration.zero, () {
-        state = const AppState.unAuthenticated();
-      });
+      updateAppState(AppState.unAuthenticated(isNavigate: true));
     }
   }
 
   Future<void> unAuthenticated() async {
     _read(obDbProvider).logOut();
-    Future.delayed(Duration.zero, () {
-      state = const AppState.unAuthenticated();
-    });
+    updateAppState(AppState.unAuthenticated(isNavigate: true));
+  }
+
+  Future<void> authenticated(Session session) async {
+    _read(obDbProvider).saveLoggedUser(session);
+    updateAppState(AppState.authenticated(session, isNavigate: true));
   }
 
   void updateAppState(AppState<Session> appState) {
-    Future.delayed(Duration.zero, () {
-      state = appState;
-    });
+    state = appState;
+    notifyListeners();
   }
 }

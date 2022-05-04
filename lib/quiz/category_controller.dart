@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quiz_android/app/entities/base_state.dart';
 import 'package:quiz_android/app/entities/failure.dart';
+import 'package:quiz_android/app_setup/firebase/firebase_service.dart';
 import 'package:quiz_android/quiz/entities/quiz_entities.dart';
 import 'package:quiz_android/repositories/app_repository.dart';
 
@@ -22,17 +23,19 @@ class CategoryController<T> extends StateNotifier<BaseState> {
   final Reader _read;
 
   AppRepository get _repo => _read(appRepository);
+  FirebaseService get _firebaseRepo => _read(firebaseService);
 
   Future getAllCategories() async {
     state = BaseState<void>.loading();
-    final response = await _repo.getAllCategories();
-    response.fold((categories) {
-      _read(categoriesList.notifier).state = categories;
-      state = BaseState<List<QuizCategory>>.success(
-        data: categories,
-      );
-    }, (failure) {
-      state = BaseState<Failure>.error(failure);
-    });
+    // final response = await _repo.getAllCategories();
+    // response.fold((categories) {
+    //   _read(categoriesList.notifier).state = categories;
+    //   state = BaseState<List<QuizCategory>>.success(
+    //     data: categories,
+    //   );
+    // }, (failure) {
+    //   state = BaseState<Failure>.error(failure);
+    // });
+    final response = await _firebaseRepo.fetchCategories();
   }
 }

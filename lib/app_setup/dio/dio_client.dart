@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:quiz_android/app_setup/dio/interceptors/error_interceptor.dart';
-import 'package:quiz_android/app_setup/dio/interceptors/request_interceptor.dart';
 import 'package:quiz_android/app_setup/dio/interceptors/response_interceptor.dart';
 import 'package:quiz_android/common/constants/app_constants.dart';
 import 'package:riverpod/riverpod.dart';
@@ -16,10 +15,9 @@ final dioProvider = Provider<Dio>((ref) {
   dio.options.connectTimeout = 60000; // 30 sec
   dio.options.receiveTimeout = 60000;
   dio.options.contentType = Headers.jsonContentType;
-  dio.options.extra = <String, Object>{requiredToken: true};
   dio.interceptors.addAll([
     LogInterceptor(),
-    RequestInterceptor(ref.read, dio),
+    // RequestInterceptor(ref.read, dio),
     ResponseInterceptor(),
     ErrorInterceptor(ref.read, dio),
   ]);

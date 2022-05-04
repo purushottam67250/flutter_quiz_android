@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,11 +15,13 @@ final authStateChangesProvider = StreamProvider<User?>(
 
 class FirebaseService {
   late FirebaseAuth firebaseAuth;
+  late FirebaseFirestore firestore;
   bool isLoading = false;
 
   Future<void> init() async {
     // await Firebase.initializeApp();
     firebaseAuth = FirebaseAuth.instance;
+    firestore = FirebaseFirestore.instance;
   }
 
   Future<Either<Session, Failure>> signIn({
@@ -38,7 +41,6 @@ class FirebaseService {
           ),
         );
       } else {
-        firebaseAuth.idTokenChanges();
         return Left(session);
       }
     } on FirebaseAuthException catch (e) {
@@ -76,5 +78,15 @@ class FirebaseService {
     firebaseAuth
       ..signOut()
       ..idTokenChanges();
+  }
+
+  Future<Either<Session, Failure>> fetchCategories() async {
+    try {
+      final categories = await firestore.collection('categories').get();
+      print('message: $categories');
+      return Right(Failure('', FailureType.cancel));
+    } on FirebaseAuthException catch (e) {
+      return Right(Failure.fromException(e));
+    }
   }
 }

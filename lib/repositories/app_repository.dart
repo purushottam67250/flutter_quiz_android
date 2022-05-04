@@ -20,8 +20,9 @@ class AppRepository {
   Future<Either<List<QuizCategory>, Failure>> getAllCategories(
       {int page = 1}) async {
     try {
-      final response =
-          await _dio.get<Map<String, dynamic>>(AppConstants.getCategories);
+      final response = await _dio.get<Map<String, dynamic>>(
+        AppConstants.getCategories,
+      );
       final cats = response.data?.keys
           .map(
             (e) => QuizCategory(name: e),

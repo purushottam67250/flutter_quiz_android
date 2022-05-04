@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quiz_android/app/app_controller.dart';
+import 'package:quiz_android/app/entities/app_entities.dart';
 import 'package:quiz_android/app/entities/base_state.dart';
 import 'package:quiz_android/app_setup/firebase/auth_controller.dart';
+import 'package:quiz_android/app_setup/routes/navigator_routes.dart'
+    as app_route;
 import 'package:quiz_android/common/constants/color_constants.dart';
 import 'package:quiz_android/common/widgets/app_container.dart';
+import 'package:quiz_android/util.dart';
 
 final loginController =
     StateNotifierProvider<AuthController, BaseState>(authController);
@@ -33,6 +38,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AppStateNotifier>(appController('session'), (prev, next) {
+      if (next.state is Authenticated) {
+        handleNavigation(ref, app_route.homeRoute);
+      }
+    });
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white.withOpacity(0.85),

@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:quiz_android/app/entities/app_entities.dart';
+import 'package:quiz_android/app/app_controller.dart';
 import 'package:quiz_android/app/entities/base_state.dart';
 import 'package:quiz_android/app/entities/failure.dart';
-import 'package:quiz_android/app_setup/app_state_notifier.dart';
 import 'package:quiz_android/app_setup/firebase/firebase_service.dart';
 import 'package:quiz_android/authentication/entities/session.dart';
 
@@ -23,7 +22,6 @@ class AuthController<T> extends StateNotifier<BaseState> {
   final CancelToken? cancelToken;
 
   FirebaseService get _repo => _read(firebaseService);
-  AppStateNotifier get _appState => _read(appController.notifier);
 
   Future<void> signIn({
     required String email,
@@ -33,7 +31,7 @@ class AuthController<T> extends StateNotifier<BaseState> {
 
     final response = await _repo.signIn(email: email, password: password);
     response.fold((l) {
-      _appState.updateAppState(AppState.authenticated(l, isNavigate: true));
+      _read(appController('session')).authenticated(l);
       state = BaseState<Session>.success(data: l);
     }, (r) {
       state = BaseState<Failure>.error(r);
@@ -48,7 +46,7 @@ class AuthController<T> extends StateNotifier<BaseState> {
 
     final response = await _repo.signUp(email: email, password: password);
     response.fold((l) {
-      _appState.updateAppState(AppState.authenticated(l));
+      _read(appController('session')).authenticated(l);
       state = BaseState<Session>.success(data: l);
     }, (r) {
       state = BaseState<Failure>.error(r);
@@ -57,6 +55,6 @@ class AuthController<T> extends StateNotifier<BaseState> {
 
   void logOut() {
     _repo.logOut();
-    _appState.updateAppState(AppState.unAuthenticated(isNavigate: true));
+    _read(appController('session')).unAuthenticated();
   }
 }
