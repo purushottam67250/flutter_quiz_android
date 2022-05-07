@@ -14,13 +14,23 @@ class Session with _$Session {
     required String email,
     required String niceName,
     required String displayName,
-    @Default(-1) int userId,
+    @Default('') String userId,
     required String userFirstName,
     required String userLastName,
+    @Default('') String image,
   }) = _Session;
 
   factory Session.fromJson(Map<String, dynamic> json) =>
       _$SessionFromJson(json);
+
+  factory Session.defaultSession() => Session(
+        token: '',
+        email: '',
+        niceName: '',
+        displayName: '',
+        userFirstName: '',
+        userLastName: '',
+      );
 }
 
 extension UserCredentialX on UserCredential {
@@ -34,6 +44,7 @@ extension UserCredentialX on UserCredential {
       displayName: user.displayName ?? '',
       userFirstName: '',
       userLastName: '',
+      userId: user.uid,
     );
   }
 }

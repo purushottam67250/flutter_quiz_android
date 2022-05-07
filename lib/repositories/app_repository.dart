@@ -37,12 +37,13 @@ class AppRepository {
   }
 
   Future<Either<List<QuizQuestion>, Failure>> getQuizQuestions(
-      {int page = 1}) async {
+    String category,
+  ) async {
     try {
       final response = await _dio.get<List<dynamic>>(
         AppConstants.getQuestions,
         queryParameters: <String, dynamic>{
-          'categories': 'arts_and_literature',
+          'categories': category,
           'limit': 20,
         },
       );

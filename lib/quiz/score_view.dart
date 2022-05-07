@@ -10,10 +10,12 @@ class ScoreView extends StatelessWidget {
     Key? key,
     required this.questions,
     required this.replay,
+    required this.category,
   }) : super(key: key);
 
   final List<QuizQuestion> questions;
   final VoidCallback replay;
+  final String category;
   int score = 0;
   int correct = 0;
   int incorrect = 0;
@@ -60,8 +62,8 @@ class ScoreView extends StatelessWidget {
                 const SizedBox(
                   height: 60,
                 ),
-                const Text(
-                  'Mathematics Quiz',
+                Text(
+                  '${category} Quiz',
                   style: TextStyle(
                     color: Colors.white38,
                     fontSize: 24,

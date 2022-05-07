@@ -15,7 +15,6 @@ import 'package:quiz_android/app_setup/firebase/firebase_service.dart';
 import 'package:quiz_android/app_setup/routes/navigator_routes.dart'
     as app_route;
 import 'package:quiz_android/common/constants/string_constants.dart';
-import 'package:quiz_android/quiz/quiz_screen.dart';
 import 'package:quiz_android/util.dart';
 
 final themeProvider =
@@ -50,8 +49,8 @@ class _AppState extends ConsumerState<App> {
       darkTheme: AppTheme.darkTheme,
       themeMode: themeState.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       onGenerateRoute: app_route.Router.generateRoute,
-      // home: AuthenticationWrapper(),
-      home: QuizScreen(),
+      home: AuthenticationWrapper(),
+      // home: QuizScreen(),
     );
   }
 }

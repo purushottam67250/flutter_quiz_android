@@ -20,6 +20,23 @@ class QuizQuestionsResponse {
             .toList();
 }
 
+class QuizCategoryFirebase {
+  final String name;
+  final String attribute;
+  final String image;
+
+  const QuizCategoryFirebase({
+    required this.name,
+    required this.attribute,
+    required this.image,
+  });
+
+  QuizCategoryFirebase.fromJson(Map<String, dynamic> json)
+      : name = json['name'] as String,
+        attribute = json['attribute'] as String,
+        image = json['image'] as String;
+}
+
 class QuizQuestion {
   final String category;
   final String id;

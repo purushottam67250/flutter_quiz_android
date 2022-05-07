@@ -22,6 +22,7 @@ class AuthController<T> extends StateNotifier<BaseState> {
   final CancelToken? cancelToken;
 
   FirebaseService get _repo => _read(firebaseService);
+  FirebaseService get _firebaseRepo => _read(firebaseService);
 
   Future<void> signIn({
     required String email,
@@ -56,5 +57,16 @@ class AuthController<T> extends StateNotifier<BaseState> {
   void logOut() {
     _repo.logOut();
     _read(appController('session')).unAuthenticated();
+    state = BaseState<Session>.success();
+  }
+
+  Future<void> getUser(String userId) async {
+    state = BaseState<void>.loading();
+    final response = await _firebaseRepo.fetchUser(userId);
+    return response.fold((l) {
+      state = BaseState<Session>.success(data: l);
+    }, (r) {
+      state = BaseState<Failure>.error(r);
+    });
   }
 }

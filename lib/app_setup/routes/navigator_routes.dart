@@ -25,9 +25,12 @@ class Router {
           builder: (_) => const HomeScreen(),
         );
       case quizRoute:
-        return MaterialPageRoute<QuizScreen>(
-          builder: (_) => const QuizScreen(),
-        );
+        return MaterialPageRoute<QuizScreen>(builder: (_) {
+          final args = settings.arguments! as Map<String, String>;
+          return QuizScreen(
+            category: args['category']!,
+          );
+        });
       default:
         return MaterialPageRoute<SplashScreen>(
           builder: (_) => const SplashScreen(),
@@ -41,8 +44,6 @@ class Router {
         return const SplashScreen();
       case homeRoute:
         return const HomeScreen();
-      case quizRoute:
-        return const QuizScreen();
       case loginRoute:
         return const LoginScreen();
       default:

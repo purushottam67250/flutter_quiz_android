@@ -3,81 +3,24 @@ import 'dart:math' as qmath;
 import 'package:flutter/material.dart';
 import 'package:quiz_android/common/constants/color_constants.dart';
 import 'package:quiz_android/common/widgets/app_container.dart';
-import 'package:quiz_android/quiz/entities/quiz_entities.dart';
 import 'package:quiz_android/quiz/widgets/answer_option_widget.dart';
 import 'package:quiz_android/quiz/widgets/button_section.dart';
 import 'package:quiz_android/quiz/widgets/question_widget.dart';
 
-class QuizView extends StatefulWidget {
-  QuizView({
+class QuizViewLoading extends StatefulWidget {
+  QuizViewLoading({
     Key? key,
-    required this.onAnswerSelection,
-    required this.question,
-    required this.questionIndex,
-    required this.onNext,
-    required this.onQuit,
-    required this.totalQuestions,
-    required this.timeout,
     required this.category,
   }) : super(key: key);
 
-  final Function(String) onAnswerSelection;
-  final QuizQuestion question;
-  final int questionIndex;
-  final Function() onNext;
-  final Function() onQuit;
-  final int totalQuestions;
-  final VoidCallback timeout;
   final String category;
 
   @override
-  State<QuizView> createState() => _QuizViewState();
+  State<QuizViewLoading> createState() => _QuizViewLoadingState();
 }
 
-class _QuizViewState extends State<QuizView> with TickerProviderStateMixin {
-  late AnimationController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 30),
-    );
-    controller.addStatusListener(
-      (status) {
-        if (status == AnimationStatus.dismissed) {
-          widget.timeout();
-        }
-      },
-    );
-    control();
-  }
-
-  String get timerString {
-    Duration duration = controller.duration! * controller.value;
-    return '${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
-  }
-
-  void control() {
-    if (controller.isAnimating)
-      controller.stop();
-    else {
-      controller.reverse(
-          from: controller.value == 0.0 ? 1.0 : controller.value);
-    }
-  }
-
-  void _onNext() {
-    widget.onNext();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
+class _QuizViewLoadingState extends State<QuizViewLoading>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -133,19 +76,18 @@ class _QuizViewState extends State<QuizView> with TickerProviderStateMixin {
                                 height: 5,
                               ),
                               QuestionIndexWidget(
-                                  index: widget.questionIndex + 1),
+                                index: 1,
+                              ),
                             ],
                           ),
-                          TimerWidget(
-                            controller: controller,
-                          ),
+                          TimerWidget(),
                         ],
                       ),
                       const SizedBox(
                         height: 5,
                       ),
                       QuestionCounterWidget(
-                        questionIndex: widget.questionIndex,
+                        questionIndex: 1,
                       ),
                     ],
                   ),
@@ -176,7 +118,7 @@ class _QuizViewState extends State<QuizView> with TickerProviderStateMixin {
                       minHeight: screenSize.height * 0.20,
                     ),
                     child: QuestionWidget(
-                      question: widget.question.question,
+                      question: '',
                     ),
                   ),
                 ),
@@ -191,13 +133,13 @@ class _QuizViewState extends State<QuizView> with TickerProviderStateMixin {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // answers options here
-                  ...widget.question.incorrectAnswers
+                  ...[1, 2, 3, 4]
                       .map(
                         (e) => AnswerOptionWidget(
-                          option: e,
-                          selected: e == widget.question.answeredOption,
+                          option: '',
+                          selected: false,
                           onSelection: () {
-                            widget.onAnswerSelection(e);
+                            //
                           },
                         ),
                       )
@@ -209,10 +151,14 @@ class _QuizViewState extends State<QuizView> with TickerProviderStateMixin {
               ),
             ),
             ButtonSection(
-              isNextEnabled: widget.question.answeredOption.isNotEmpty,
-              isLast: widget.question.index == widget.totalQuestions - 1,
-              onNext: _onNext,
-              onQuit: widget.onQuit,
+              isNextEnabled: false,
+              isLast: false,
+              onNext: () {
+                //
+              },
+              onQuit: () {
+                //
+              },
             ),
           ],
         ),
@@ -224,14 +170,7 @@ class _QuizViewState extends State<QuizView> with TickerProviderStateMixin {
 class TimerWidget extends StatelessWidget {
   const TimerWidget({
     Key? key,
-    required this.controller,
   }) : super(key: key);
-
-  final AnimationController controller;
-  String get timerString {
-    Duration duration = controller.duration! * controller.value;
-    return '${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -247,53 +186,14 @@ class TimerWidget extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-              child: AnimatedBuilder(
-                animation: controller,
-                builder: (context, child) {
-                  return CustomPaint(
-                    painter: QuizTimerPainter(
-                      animation: controller,
-                      backgroundColor: Colors.white30,
-                      color: ColorConstants.pink,
-                    ),
-                  );
-                },
-              ),
-            ),
-            Positioned.fill(
-              child: AnimatedBuilder(
-                animation: controller,
-                builder: (context, child) {
-                  final opacity =
-                      (controller.lastElapsedDuration?.inSeconds ?? 0).isOdd
-                          ? 1
-                          : 0;
-                  return AnimatedOpacity(
-                    duration: Duration(seconds: 1),
-                    opacity: opacity.toDouble(),
-                    child: Icon(
-                      Icons.timer,
-                      color: ColorConstants.pink,
-                      size: 55,
-                    ),
-                  );
-                },
-              ),
-            ),
-            Align(
-              alignment: FractionalOffset.center,
-              child: AnimatedBuilder(
-                animation: controller,
-                builder: (context, child) {
-                  return Text(
-                    timerString,
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: ColorConstants.backgroundColorWhite,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  );
-                },
+              child: AnimatedOpacity(
+                duration: Duration(seconds: 1),
+                opacity: 1,
+                child: Icon(
+                  Icons.timer,
+                  color: ColorConstants.pink,
+                  size: 55,
+                ),
               ),
             ),
           ],

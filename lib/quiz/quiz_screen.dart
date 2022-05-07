@@ -5,6 +5,7 @@ import 'package:quiz_android/common/constants/color_constants.dart';
 import 'package:quiz_android/quiz/entities/quiz_entities.dart';
 import 'package:quiz_android/quiz/quiz_controller.dart';
 import 'package:quiz_android/quiz/quiz_view.dart';
+import 'package:quiz_android/quiz/quiz_view_loading.dart';
 import 'package:quiz_android/quiz/score_view.dart';
 
 final questionProvider =
@@ -12,7 +13,12 @@ final questionProvider =
         quizController);
 
 class QuizScreen extends ConsumerStatefulWidget {
-  const QuizScreen({Key? key}) : super(key: key);
+  const QuizScreen({
+    Key? key,
+    required this.category,
+  }) : super(key: key);
+
+  final String category;
 
   @override
   ConsumerState<QuizScreen> createState() => _QuizScreenState();
@@ -21,44 +27,48 @@ class QuizScreen extends ConsumerStatefulWidget {
 class _QuizScreenState extends ConsumerState<QuizScreen> {
   @override
   void initState() {
-    ref.read(questionProvider.notifier).getQuizQuestions();
+    ref
+        .read(questionProvider.notifier)
+        .getQuizQuestions(category: widget.category);
     super.initState();
   }
 
   void _replay() {
-    ref.read(questionProvider.notifier).getQuizQuestions();
+    ref
+        .read(questionProvider.notifier)
+        .getQuizQuestions(category: widget.category);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ref.watch<BaseState>(questionProvider).maybeMap(
-      success: (state) {
-        return QuizPageView(
-          questions: state.data! as List<QuizQuestion>,
-          replay: _replay,
-        );
-      },
-      loading: (_) {
-        return SizedBox(
-          child: Center(
-            child: Text('loading'),
-          ),
-        );
-      },
-      error: (error) {
-        return SizedBox(
-          child: Center(
-            child: Text('error $error'),
-          ),
-        );
-      },
-      orElse: () {
-        return SizedBox(
-          child: Center(
-            child: Text('Something unexpected '),
-          ),
-        );
-      },
+    return Scaffold(
+      backgroundColor: ColorConstants.backgroundColorWhite,
+      body: ref.watch<BaseState>(questionProvider).maybeMap(
+        success: (state) {
+          return QuizPageView(
+            questions: state.data! as List<QuizQuestion>,
+            replay: _replay,
+            category: widget.category,
+          );
+        },
+        loading: (_) {
+          return QuizViewLoading(category: widget.category);
+        },
+        error: (error) {
+          return SizedBox(
+            child: Center(
+              child: Text('error $error'),
+            ),
+          );
+        },
+        orElse: () {
+          return SizedBox(
+            child: Center(
+              child: Text('Something unexpected '),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -68,10 +78,12 @@ class QuizPageView extends StatefulWidget {
     Key? key,
     required this.questions,
     required this.replay,
+    required this.category,
   }) : super(key: key);
 
   final List<QuizQuestion> questions;
   final VoidCallback replay;
+  final String category;
 
   @override
   State<QuizPageView> createState() => _QuizPageViewState();
@@ -130,38 +142,37 @@ class _QuizPageViewState extends State<QuizPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorConstants.backgroundColorWhite,
-      body: AnimatedSwitcher(
-        key: ValueKey(currentQuestion.id),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          return FadeTransition(
-            child: child,
-            opacity: animation,
-          );
-        },
-        duration: const Duration(milliseconds: 500),
-        child: allAnswered
-            ? Container(
-                key: ValueKey('allAnswered'),
-                child: ScoreView(
-                  questions: questions,
-                  replay: widget.replay,
-                ),
-              )
-            : Container(
-                key: ValueKey(currentQuestion.id),
-                child: QuizView(
-                  questionIndex: currentQuestion.index,
-                  question: currentQuestion,
-                  onAnswerSelection: _onAnswerSelection,
-                  onNext: _onNext,
-                  onQuit: _onQuit,
-                  totalQuestions: questions.length,
-                  timeout: _timeout,
-                ),
+    return AnimatedSwitcher(
+      key: ValueKey(currentQuestion.id),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return FadeTransition(
+          child: child,
+          opacity: animation,
+        );
+      },
+      duration: const Duration(milliseconds: 500),
+      child: allAnswered
+          ? Container(
+              key: ValueKey('allAnswered'),
+              child: ScoreView(
+                questions: questions,
+                replay: widget.replay,
+                category: widget.category,
               ),
-      ),
+            )
+          : Container(
+              key: ValueKey(currentQuestion.id),
+              child: QuizView(
+                questionIndex: currentQuestion.index,
+                question: currentQuestion,
+                onAnswerSelection: _onAnswerSelection,
+                onNext: _onNext,
+                onQuit: _onQuit,
+                totalQuestions: questions.length,
+                timeout: _timeout,
+                category: widget.category,
+              ),
+            ),
     );
   }
 }

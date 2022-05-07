@@ -20,6 +20,19 @@ final appController =
   return AppStateNotifier(ref.read)..appStarted();
 });
 
+final userProvider = StateProvider<Session>(
+  (ref) {
+    return Session(
+      token: '',
+      email: '',
+      niceName: '',
+      displayName: '',
+      userFirstName: '',
+      userLastName: '',
+    );
+  },
+);
+
 class AppStateNotifier extends ChangeNotifier {
   ///
   AppStateNotifier(this._read) : super();
@@ -32,6 +45,7 @@ class AppStateNotifier extends ChangeNotifier {
     await _db.init();
     final session = _read(obDbProvider).loggedUser();
     if (session != null) {
+      _read(userProvider.notifier).state = session;
       updateAppState(AppState.authenticated(session, isNavigate: true));
     } else {
       updateAppState(AppState.unAuthenticated(isNavigate: true));
@@ -45,6 +59,7 @@ class AppStateNotifier extends ChangeNotifier {
 
   Future<void> authenticated(Session session) async {
     _read(obDbProvider).saveLoggedUser(session);
+    _read(userProvider.notifier).state = session;
     updateAppState(AppState.authenticated(session, isNavigate: true));
   }
 

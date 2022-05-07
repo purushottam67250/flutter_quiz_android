@@ -18,6 +18,21 @@ String getGreeting() {
   return message;
 }
 
+extension StringX on String {
+  String initials() {
+    if (this.isEmpty) return '';
+    final names = this.split(' ');
+    if (names.length == 0) return '';
+    if (names.length == 1) {
+      return names.first.characters.first;
+    } else {
+      final firstN = names.first.characters.first;
+      final secondN = names.last.characters.first;
+      return '$firstN$secondN';
+    }
+  }
+}
+
 final Shader linearGradient = LinearGradient(
   colors: <Color>[
     ColorConstants.purple,

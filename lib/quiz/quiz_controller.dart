@@ -19,9 +19,11 @@ class QuizController<T> extends StateNotifier<BaseState> {
 
   AppRepository get _repo => _read(appRepository);
 
-  Future getQuizQuestions() async {
+  Future getQuizQuestions({
+    required String category,
+  }) async {
     state = BaseState<void>.loading();
-    final response = await _repo.getQuizQuestions();
+    final response = await _repo.getQuizQuestions(category);
     response.fold((data) {
       _read(questionsList.notifier).state = data;
       state = BaseState<List<QuizQuestion>>.success(

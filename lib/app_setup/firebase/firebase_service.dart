@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quiz_android/app/entities/failure.dart';
 import 'package:quiz_android/authentication/entities/session.dart';
+import 'package:quiz_android/quiz/entities/quiz_entities.dart';
 
 final firebaseService = Provider<FirebaseService>((ref) => FirebaseService());
 
@@ -80,11 +81,26 @@ class FirebaseService {
       ..idTokenChanges();
   }
 
-  Future<Either<Session, Failure>> fetchCategories() async {
+  Future<Either<List<QuizCategoryFirebase>, Failure>> fetchCategories() async {
     try {
       final categories = await firestore.collection('categories').get();
-      print('message: $categories');
-      return Right(Failure('', FailureType.cancel));
+      final data = categories.docs
+          .map((e) => QuizCategoryFirebase.fromJson(e.data()))
+          .toList();
+      print('message: $data');
+      return Left(data);
+    } on FirebaseAuthException catch (e) {
+      return Right(Failure.fromException(e));
+    }
+  }
+
+  Future<Either<Session, Failure>> fetchUser(String userId) async {
+    try {
+      final user = await firestore.collection('users').doc(userId).get();
+      final data = user.data();
+      final parsedData = Session.fromJson(data!);
+      // print('message: $data');
+      return Left(parsedData);
     } on FirebaseAuthException catch (e) {
       return Right(Failure.fromException(e));
     }

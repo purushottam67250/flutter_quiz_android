@@ -21,7 +21,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 3219708598074160258),
       name: 'Session',
-      lastPropertyId: const IdUid(8, 7621192669483332857),
+      lastPropertyId: const IdUid(9, 6268754392898351773),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -52,7 +52,7 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(6, 1162803864636780608),
             name: 'userId',
-            type: 6,
+            type: 9,
             flags: 0),
         ModelProperty(
             id: const IdUid(7, 2724818297111525428),
@@ -62,6 +62,11 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(8, 7621192669483332857),
             name: 'userLastName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 6268754392898351773),
+            name: 'image',
             type: 9,
             flags: 0)
       ],
@@ -121,17 +126,20 @@ ModelDefinition getObjectBoxModel() {
           final emailOffset = fbb.writeString(object.email);
           final niceNameOffset = fbb.writeString(object.niceName);
           final displayNameOffset = fbb.writeString(object.displayName);
+          final userIdOffset = fbb.writeString(object.userId);
           final userFirstNameOffset = fbb.writeString(object.userFirstName);
           final userLastNameOffset = fbb.writeString(object.userLastName);
-          fbb.startTable(9);
+          final imageOffset = fbb.writeString(object.image);
+          fbb.startTable(10);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(1, tokenOffset);
           fbb.addOffset(2, emailOffset);
           fbb.addOffset(3, niceNameOffset);
           fbb.addOffset(4, displayNameOffset);
-          fbb.addInt64(5, object.userId);
+          fbb.addOffset(5, userIdOffset);
           fbb.addOffset(6, userFirstNameOffset);
           fbb.addOffset(7, userLastNameOffset);
+          fbb.addOffset(8, imageOffset);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -150,12 +158,13 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 10, ''),
               displayName: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 12, ''),
-              userId:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0),
+              userId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''),
               userFirstName: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 16, ''),
               userLastName: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 18, ''));
+                  .vTableGet(buffer, rootOffset, 18, ''),
+              image: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 20, ''));
 
           return object;
         })
@@ -185,7 +194,7 @@ class Session_ {
 
   /// see [Session.userId]
   static final userId =
-      QueryIntegerProperty<Session>(_entities[0].properties[5]);
+      QueryStringProperty<Session>(_entities[0].properties[5]);
 
   /// see [Session.userFirstName]
   static final userFirstName =
@@ -194,4 +203,7 @@ class Session_ {
   /// see [Session.userLastName]
   static final userLastName =
       QueryStringProperty<Session>(_entities[0].properties[7]);
+
+  /// see [Session.image]
+  static final image = QueryStringProperty<Session>(_entities[0].properties[8]);
 }

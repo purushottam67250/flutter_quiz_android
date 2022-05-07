@@ -12,9 +12,10 @@ _$_Session _$$_SessionFromJson(Map<String, dynamic> json) => _$_Session(
       email: json['email'] as String,
       niceName: json['niceName'] as String,
       displayName: json['displayName'] as String,
-      userId: json['userId'] as int? ?? -1,
+      userId: json['userId'] as String? ?? '',
       userFirstName: json['userFirstName'] as String,
       userLastName: json['userLastName'] as String,
+      image: json['image'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$_SessionToJson(_$_Session instance) =>
@@ -27,4 +28,5 @@ Map<String, dynamic> _$$_SessionToJson(_$_Session instance) =>
       'userId': instance.userId,
       'userFirstName': instance.userFirstName,
       'userLastName': instance.userLastName,
+      'image': instance.image,
     };
