@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz_android/app/app_controller.dart';
 import 'package:quiz_android/app/entities/app_entities.dart';
@@ -10,6 +9,7 @@ import 'package:quiz_android/app_setup/routes/navigator_routes.dart'
     as app_route;
 import 'package:quiz_android/common/constants/color_constants.dart';
 import 'package:quiz_android/common/widgets/app_container.dart';
+import 'package:quiz_android/common/widgets/custom_text_field.dart';
 import 'package:quiz_android/util.dart';
 
 final loginController =
@@ -98,6 +98,42 @@ class SignupView extends ConsumerStatefulWidget {
 }
 
 class _SignupViewState extends ConsumerState<SignupView> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final nameController = TextEditingController();
+  final nameErrorNotifier = ValueNotifier('');
+  final passwordErrorNotifier = ValueNotifier('');
+  final emailErrorNotifier = ValueNotifier('');
+
+  bool _validate() {
+    bool isValid = true;
+    if (nameController.value.text.isEmpty) {
+      nameErrorNotifier.value = 'Enter full name to register.';
+      isValid = false;
+    }
+    if (emailController.value.text.isEmpty) {
+      emailErrorNotifier.value = 'Email field is required.';
+      isValid = false;
+    }
+    if (passwordController.value.text.isEmpty) {
+      passwordErrorNotifier.value = 'Password must not be empty.';
+      isValid = false;
+    }
+    if (passwordController.value.text.length < 8) {
+      passwordErrorNotifier.value = 'Password must be at least 8 characters.';
+      isValid = false;
+    }
+    return isValid;
+  }
+
+  void _signUp() {
+    if (!_validate()) return;
+    ref.read(signupController.notifier).signUp(
+          email: 'email@gmail.com',
+          password: 'password',
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -113,23 +149,29 @@ class _SignupViewState extends ConsumerState<SignupView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomInputFieldWithLabel(
+              CustomInputFieldWithLabel(
                 hintText: 'Your full name',
                 label: 'Full Name',
+                controller: nameController,
+                errorNotifier: nameErrorNotifier,
               ),
               const SizedBox(
                 height: 20,
               ),
-              const CustomInputFieldWithLabel(
+              CustomInputFieldWithLabel(
                 hintText: 'Your email id',
                 label: 'Email',
+                controller: emailController,
+                errorNotifier: emailErrorNotifier,
               ),
               const SizedBox(
                 height: 20,
               ),
-              const CustomInputFieldWithLabel(
+              CustomInputFieldWithLabel(
                 hintText: 'Password',
                 label: 'Password',
+                controller: passwordController,
+                errorNotifier: passwordErrorNotifier,
                 isSecret: true,
               ),
               const SizedBox(
@@ -139,12 +181,7 @@ class _SignupViewState extends ConsumerState<SignupView> {
                 height: 20,
               ),
               TextButton(
-                onPressed: () {
-                  ref.read(signupController.notifier).signUp(
-                        email: 'email@gmail.com',
-                        password: 'password',
-                      );
-                },
+                onPressed: _signUp,
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
                     ColorConstants.backgroundColor,
@@ -181,7 +218,7 @@ class _SignupViewState extends ConsumerState<SignupView> {
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               TextButton(
                 onPressed: widget.onToogle,
@@ -210,7 +247,7 @@ class _SignupViewState extends ConsumerState<SignupView> {
                 ),
               ),
               const SizedBox(
-                height: 30,
+                height: 20,
               ),
             ],
           ),
@@ -233,6 +270,32 @@ class LoginView extends ConsumerStatefulWidget {
 }
 
 class _LoginViewState extends ConsumerState<LoginView> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final passwordErrorNotifier = ValueNotifier('');
+  final emailErrorNotifier = ValueNotifier('');
+
+  bool _validate() {
+    bool isValid = true;
+    if (emailController.value.text.isEmpty) {
+      emailErrorNotifier.value = 'Email field is required.';
+      isValid = false;
+    }
+    if (passwordController.value.text.isEmpty) {
+      passwordErrorNotifier.value = 'Password must not be empty.';
+      isValid = false;
+    }
+    return isValid;
+  }
+
+  void _signIn() {
+    if (!_validate()) return;
+    ref.read(loginController.notifier).signIn(
+          email: 'email@gmail.com',
+          password: 'password',
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(loginController);
@@ -250,16 +313,20 @@ class _LoginViewState extends ConsumerState<LoginView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomInputFieldWithLabel(
+              CustomInputFieldWithLabel(
                 hintText: 'Your email id',
                 label: 'Email',
+                controller: emailController,
+                errorNotifier: emailErrorNotifier,
               ),
               const SizedBox(
                 height: 20,
               ),
-              const CustomInputFieldWithLabel(
+              CustomInputFieldWithLabel(
                 hintText: 'Password',
                 label: 'Password',
+                controller: passwordController,
+                errorNotifier: passwordErrorNotifier,
                 isSecret: true,
               ),
               const SizedBox(
@@ -282,12 +349,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 height: 20,
               ),
               TextButton(
-                onPressed: () {
-                  ref.read(loginController.notifier).signIn(
-                        email: 'email@gmail.com',
-                        password: 'password',
-                      );
-                },
+                onPressed: _signIn,
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
                     ColorConstants.backgroundColor,
@@ -328,7 +390,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       ),
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               TextButton(
                 onPressed: widget.onToogle,
@@ -357,67 +419,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 ),
               ),
               const SizedBox(
-                height: 30,
+                height: 20,
               ),
             ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class CustomInputFieldWithLabel extends StatelessWidget {
-  const CustomInputFieldWithLabel({
-    Key? key,
-    required this.hintText,
-    required this.label,
-    this.isSecret = false,
-  }) : super(key: key);
-
-  final String hintText;
-  final String label;
-  final bool isSecret;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: GoogleFonts.philosopher(
-            textStyle: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 18,
-              color: Colors.grey[800],
-            ),
-          ),
-        ),
-        TextField(
-          style: GoogleFonts.philosopher(
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-              color: Colors.black54,
-            ),
-          ),
-          obscureText: isSecret,
-          textAlignVertical: TextAlignVertical.bottom,
-          decoration: InputDecoration(
-            suffixIcon: isSecret
-                ? const FaIcon(
-                    FontAwesomeIcons.solidEye,
-                  )
-                : null,
-            hintText: hintText,
-            border: const UnderlineInputBorder(),
-            enabledBorder: const UnderlineInputBorder(),
-            focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.purpleAccent,
-              ),
-            ),
           ),
         ),
       ],
