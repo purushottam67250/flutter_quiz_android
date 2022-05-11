@@ -26,11 +26,11 @@ class _$SessionTearOff {
       {@Id(assignable: true) int? id,
       String? token,
       required String email,
-      required String niceName,
+      String? niceName,
       required String displayName,
       String userId = '',
-      required String userFirstName,
-      required String userLastName,
+      String? userFirstName,
+      String? userLastName,
       String image = ''}) {
     return _Session(
       id: id,
@@ -59,11 +59,11 @@ mixin _$Session {
   int? get id => throw _privateConstructorUsedError;
   String? get token => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  String get niceName => throw _privateConstructorUsedError;
+  String? get niceName => throw _privateConstructorUsedError;
   String get displayName => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
-  String get userFirstName => throw _privateConstructorUsedError;
-  String get userLastName => throw _privateConstructorUsedError;
+  String? get userFirstName => throw _privateConstructorUsedError;
+  String? get userLastName => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -79,11 +79,11 @@ abstract class $SessionCopyWith<$Res> {
       {@Id(assignable: true) int? id,
       String? token,
       String email,
-      String niceName,
+      String? niceName,
       String displayName,
       String userId,
-      String userFirstName,
-      String userLastName,
+      String? userFirstName,
+      String? userLastName,
       String image});
 }
 
@@ -123,7 +123,7 @@ class _$SessionCopyWithImpl<$Res> implements $SessionCopyWith<$Res> {
       niceName: niceName == freezed
           ? _value.niceName
           : niceName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       displayName: displayName == freezed
           ? _value.displayName
           : displayName // ignore: cast_nullable_to_non_nullable
@@ -135,11 +135,11 @@ class _$SessionCopyWithImpl<$Res> implements $SessionCopyWith<$Res> {
       userFirstName: userFirstName == freezed
           ? _value.userFirstName
           : userFirstName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       userLastName: userLastName == freezed
           ? _value.userLastName
           : userLastName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -157,11 +157,11 @@ abstract class _$SessionCopyWith<$Res> implements $SessionCopyWith<$Res> {
       {@Id(assignable: true) int? id,
       String? token,
       String email,
-      String niceName,
+      String? niceName,
       String displayName,
       String userId,
-      String userFirstName,
-      String userLastName,
+      String? userFirstName,
+      String? userLastName,
       String image});
 }
 
@@ -202,7 +202,7 @@ class __$SessionCopyWithImpl<$Res> extends _$SessionCopyWithImpl<$Res>
       niceName: niceName == freezed
           ? _value.niceName
           : niceName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       displayName: displayName == freezed
           ? _value.displayName
           : displayName // ignore: cast_nullable_to_non_nullable
@@ -214,11 +214,11 @@ class __$SessionCopyWithImpl<$Res> extends _$SessionCopyWithImpl<$Res>
       userFirstName: userFirstName == freezed
           ? _value.userFirstName
           : userFirstName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       userLastName: userLastName == freezed
           ? _value.userLastName
           : userLastName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -235,11 +235,11 @@ class _$_Session implements _Session {
       {@Id(assignable: true) this.id,
       this.token,
       required this.email,
-      required this.niceName,
+      this.niceName,
       required this.displayName,
       this.userId = '',
-      required this.userFirstName,
-      required this.userLastName,
+      this.userFirstName,
+      this.userLastName,
       this.image = ''});
 
   factory _$_Session.fromJson(Map<String, dynamic> json) =>
@@ -253,16 +253,16 @@ class _$_Session implements _Session {
   @override
   final String email;
   @override
-  final String niceName;
+  final String? niceName;
   @override
   final String displayName;
   @JsonKey()
   @override
   final String userId;
   @override
-  final String userFirstName;
+  final String? userFirstName;
   @override
-  final String userLastName;
+  final String? userLastName;
   @JsonKey()
   @override
   final String image;
@@ -320,11 +320,11 @@ abstract class _Session implements Session {
       {@Id(assignable: true) int? id,
       String? token,
       required String email,
-      required String niceName,
+      String? niceName,
       required String displayName,
       String userId,
-      required String userFirstName,
-      required String userLastName,
+      String? userFirstName,
+      String? userLastName,
       String image}) = _$_Session;
 
   factory _Session.fromJson(Map<String, dynamic> json) = _$_Session.fromJson;
@@ -337,15 +337,15 @@ abstract class _Session implements Session {
   @override
   String get email;
   @override
-  String get niceName;
+  String? get niceName;
   @override
   String get displayName;
   @override
   String get userId;
   @override
-  String get userFirstName;
+  String? get userFirstName;
   @override
-  String get userLastName;
+  String? get userLastName;
   @override
   String get image;
   @override

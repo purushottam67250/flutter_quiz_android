@@ -125,11 +125,17 @@ ModelDefinition getObjectBoxModel() {
           final tokenOffset =
               object.token == null ? null : fbb.writeString(object.token!);
           final emailOffset = fbb.writeString(object.email);
-          final niceNameOffset = fbb.writeString(object.niceName);
+          final niceNameOffset = object.niceName == null
+              ? null
+              : fbb.writeString(object.niceName!);
           final displayNameOffset = fbb.writeString(object.displayName);
           final userIdOffset = fbb.writeString(object.userId);
-          final userFirstNameOffset = fbb.writeString(object.userFirstName);
-          final userLastNameOffset = fbb.writeString(object.userLastName);
+          final userFirstNameOffset = object.userFirstName == null
+              ? null
+              : fbb.writeString(object.userFirstName!);
+          final userLastNameOffset = object.userLastName == null
+              ? null
+              : fbb.writeString(object.userLastName!);
           final imageOffset = fbb.writeString(object.image);
           fbb.startTable(10);
           fbb.addInt64(0, object.id ?? 0);
@@ -156,15 +162,15 @@ ModelDefinition getObjectBoxModel() {
               email: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 8, ''),
               niceName: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 10, ''),
+                  .vTableGetNullable(buffer, rootOffset, 10),
               displayName: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 12, ''),
               userId: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 14, ''),
               userFirstName: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 16, ''),
+                  .vTableGetNullable(buffer, rootOffset, 16),
               userLastName: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 18, ''),
+                  .vTableGetNullable(buffer, rootOffset, 18),
               image: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 20, ''));
 
           return object;

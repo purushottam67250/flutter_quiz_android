@@ -12,11 +12,11 @@ class Session with _$Session {
     @Id(assignable: true) int? id,
     String? token,
     required String email,
-    required String niceName,
+     String? niceName,
     required String displayName,
     @Default('') String userId,
-    required String userFirstName,
-    required String userLastName,
+     String? userFirstName,
+     String? userLastName,
     @Default('') String image,
   }) = _Session;
 

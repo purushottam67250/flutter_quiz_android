@@ -176,7 +176,7 @@ class HomeHeaderWidget extends ConsumerWidget {
     final greeting = getGreeting();
     final screenSize = MediaQuery.of(context).size;
     return Container(
-      height: screenSize.height * 0.26,
+      height: screenSize.height * 0.27,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

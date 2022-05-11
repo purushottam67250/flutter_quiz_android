@@ -10,11 +10,11 @@ _$_Session _$$_SessionFromJson(Map<String, dynamic> json) => _$_Session(
       id: json['id'] as int?,
       token: json['token'] as String?,
       email: json['email'] as String,
-      niceName: json['niceName'] as String,
+      niceName: json['niceName'] as String?,
       displayName: json['displayName'] as String,
       userId: json['userId'] as String? ?? '',
-      userFirstName: json['userFirstName'] as String,
-      userLastName: json['userLastName'] as String,
+      userFirstName: json['userFirstName'] as String?,
+      userLastName: json['userLastName'] as String?,
       image: json['image'] as String? ?? '',
     );
 
