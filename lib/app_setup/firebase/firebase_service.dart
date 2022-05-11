@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,13 +54,23 @@ class FirebaseService {
   Future<Either<Session, Failure>> signUp({
     required String email,
     required String password,
+    required String displayName,
   }) async {
     try {
       final user = await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      if (user.user == null) {
+        log('message: null ${user.user}');
+      }
       final session = user.fromFirebaseUser();
+      final userId = user.user!.uid;
+      await user.user?.updateDisplayName(displayName);
+      await firestore.collection('users').doc(userId).set(<String, String>{
+        'email': email,
+        'displayName': displayName,
+      });
       if (session == null) {
         return Right(
           Failure(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_android/authentication/login_screen.dart';
 import 'package:quiz_android/authentication/splash_screen.dart';
+import 'package:quiz_android/quiz/entities/quiz_entities.dart';
 import 'package:quiz_android/quiz/home_screen.dart';
 import 'package:quiz_android/quiz/quiz_screen.dart';
 
@@ -26,7 +27,7 @@ class Router {
         );
       case quizRoute:
         return MaterialPageRoute<QuizScreen>(builder: (_) {
-          final args = settings.arguments! as Map<String, String>;
+          final args = settings.arguments! as Map<String, QuizCategoryFirebase>;
           return QuizScreen(
             category: args['category']!,
           );

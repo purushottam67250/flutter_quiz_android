@@ -111,7 +111,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 context,
                                 quizRoute,
                                 arguments: {
-                                  'category': item.name,
+                                  'category': item,
                                 },
                               );
                             },

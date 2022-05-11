@@ -128,9 +128,15 @@ class _SignupViewState extends ConsumerState<SignupView> {
 
   void _signUp() {
     if (!_validate()) return;
+    // ref.read(signupController.notifier).signUp(
+    //       email: 'email1@gmail.com',
+    //       password: 'password',
+    //       displayName: 'User From App',
+    //     );
     ref.read(signupController.notifier).signUp(
-          email: 'email@gmail.com',
-          password: 'password',
+          email: emailController.text,
+          password: passwordController.text,
+          displayName: nameController.text,
         );
   }
 
@@ -290,9 +296,13 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   void _signIn() {
     if (!_validate()) return;
+    // ref.read(loginController.notifier).signIn(
+    //       email: 'email@gmail.com',
+    //       password: 'password',
+    //     );
     ref.read(loginController.notifier).signIn(
-          email: 'email@gmail.com',
-          password: 'password',
+          email: emailController.text,
+          password: passwordController.text,
         );
   }
 

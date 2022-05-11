@@ -42,10 +42,15 @@ class AuthController<T> extends StateNotifier<BaseState> {
   Future<void> signUp({
     required String email,
     required String password,
+    required String displayName,
   }) async {
     state = const BaseState<bool>.loading();
 
-    final response = await _repo.signUp(email: email, password: password);
+    final response = await _repo.signUp(
+      email: email,
+      password: password,
+      displayName: displayName,
+    );
     response.fold((l) {
       _read(appController('session')).authenticated(l);
       state = BaseState<Session>.success(data: l);

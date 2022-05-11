@@ -18,7 +18,7 @@ class QuizScreen extends ConsumerStatefulWidget {
     required this.category,
   }) : super(key: key);
 
-  final String category;
+  final QuizCategoryFirebase category;
 
   @override
   ConsumerState<QuizScreen> createState() => _QuizScreenState();
@@ -29,14 +29,14 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
   void initState() {
     ref
         .read(questionProvider.notifier)
-        .getQuizQuestions(category: widget.category);
+        .getQuizQuestions(category: widget.category.attribute);
     super.initState();
   }
 
   void _replay() {
     ref
         .read(questionProvider.notifier)
-        .getQuizQuestions(category: widget.category);
+        .getQuizQuestions(category: widget.category.name);
   }
 
   @override
@@ -48,11 +48,11 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
           return QuizPageView(
             questions: state.data! as List<QuizQuestion>,
             replay: _replay,
-            category: widget.category,
+            category: widget.category.name,
           );
         },
         loading: (_) {
-          return QuizViewLoading(category: widget.category);
+          return QuizViewLoading(category: widget.category.name);
         },
         error: (error) {
           return SizedBox(
@@ -97,7 +97,7 @@ class _QuizPageViewState extends State<QuizPageView> {
   @override
   void initState() {
     super.initState();
-    questions = widget.questions.take(2).toList();
+    questions = widget.questions.toList();
     currentQuestion = widget.questions[0];
   }
 
