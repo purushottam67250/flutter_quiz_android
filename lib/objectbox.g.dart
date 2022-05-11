@@ -122,7 +122,8 @@ ModelDefinition getObjectBoxModel() {
           }
         },
         objectToFB: (Session object, fb.Builder fbb) {
-          final tokenOffset = fbb.writeString(object.token);
+          final tokenOffset =
+              object.token == null ? null : fbb.writeString(object.token!);
           final emailOffset = fbb.writeString(object.email);
           final niceNameOffset = fbb.writeString(object.niceName);
           final displayNameOffset = fbb.writeString(object.displayName);
@@ -151,7 +152,7 @@ ModelDefinition getObjectBoxModel() {
               id: const fb.Int64Reader()
                   .vTableGetNullable(buffer, rootOffset, 4),
               token: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
+                  .vTableGetNullable(buffer, rootOffset, 6),
               email: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 8, ''),
               niceName: const fb.StringReader(asciiOptimization: true)

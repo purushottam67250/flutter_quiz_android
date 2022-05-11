@@ -10,7 +10,7 @@ class Session with _$Session {
   @Entity(realClass: Session)
   factory Session({
     @Id(assignable: true) int? id,
-    required String token,
+    String? token,
     required String email,
     required String niceName,
     required String displayName,
@@ -38,7 +38,8 @@ extension UserCredentialX on UserCredential {
     final user = this.user;
     if (user == null) return null;
     return Session(
-      token: '${this.credential?.token}',
+      // token: '${this.credential?.token}',
+      token: '',
       email: user.email ?? '',
       niceName: user.displayName ?? '',
       displayName: user.displayName ?? '',

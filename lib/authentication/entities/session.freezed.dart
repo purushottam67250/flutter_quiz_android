@@ -24,7 +24,7 @@ class _$SessionTearOff {
 
   _Session call(
       {@Id(assignable: true) int? id,
-      required String token,
+      String? token,
       required String email,
       required String niceName,
       required String displayName,
@@ -57,7 +57,7 @@ const $Session = _$SessionTearOff();
 mixin _$Session {
   @Id(assignable: true)
   int? get id => throw _privateConstructorUsedError;
-  String get token => throw _privateConstructorUsedError;
+  String? get token => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get niceName => throw _privateConstructorUsedError;
   String get displayName => throw _privateConstructorUsedError;
@@ -77,7 +77,7 @@ abstract class $SessionCopyWith<$Res> {
       _$SessionCopyWithImpl<$Res>;
   $Res call(
       {@Id(assignable: true) int? id,
-      String token,
+      String? token,
       String email,
       String niceName,
       String displayName,
@@ -115,7 +115,7 @@ class _$SessionCopyWithImpl<$Res> implements $SessionCopyWith<$Res> {
       token: token == freezed
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -155,7 +155,7 @@ abstract class _$SessionCopyWith<$Res> implements $SessionCopyWith<$Res> {
   @override
   $Res call(
       {@Id(assignable: true) int? id,
-      String token,
+      String? token,
       String email,
       String niceName,
       String displayName,
@@ -194,7 +194,7 @@ class __$SessionCopyWithImpl<$Res> extends _$SessionCopyWithImpl<$Res>
       token: token == freezed
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -233,7 +233,7 @@ class __$SessionCopyWithImpl<$Res> extends _$SessionCopyWithImpl<$Res>
 class _$_Session implements _Session {
   _$_Session(
       {@Id(assignable: true) this.id,
-      required this.token,
+      this.token,
       required this.email,
       required this.niceName,
       required this.displayName,
@@ -249,7 +249,7 @@ class _$_Session implements _Session {
   @Id(assignable: true)
   final int? id;
   @override
-  final String token;
+  final String? token;
   @override
   final String email;
   @override
@@ -318,7 +318,7 @@ class _$_Session implements _Session {
 abstract class _Session implements Session {
   factory _Session(
       {@Id(assignable: true) int? id,
-      required String token,
+      String? token,
       required String email,
       required String niceName,
       required String displayName,
@@ -333,7 +333,7 @@ abstract class _Session implements Session {
   @Id(assignable: true)
   int? get id;
   @override
-  String get token;
+  String? get token;
   @override
   String get email;
   @override

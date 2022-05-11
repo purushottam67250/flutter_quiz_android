@@ -8,7 +8,7 @@ part of 'session.dart';
 
 _$_Session _$$_SessionFromJson(Map<String, dynamic> json) => _$_Session(
       id: json['id'] as int?,
-      token: json['token'] as String,
+      token: json['token'] as String?,
       email: json['email'] as String,
       niceName: json['niceName'] as String,
       displayName: json['displayName'] as String,
