@@ -26,21 +26,21 @@ class AuthRepository {
     return;
   }
 
-  Future<Either<String, Failure>> getToken() async {
-    try {
-      final session = _read(obDbProvider).loggedUser();
-      if (session == null) {
-        return Right(
-          Failure(
-            'Not authenticated',
-            FailureType.authentication,
-          ),
-        );
-      }
-      return Left(session.token);
-    } catch (e) {
-      log('$e');
-      return Right(Failure.fromException(e));
-    }
-  }
+  // Future<Either<String, Failure>> getToken() async {
+  //   try {
+  //     final session = _read(obDbProvider).loggedUser();
+  //     if (session == null) {
+  //       return Right(
+  //         Failure(
+  //           'Not authenticated',
+  //           FailureType.authentication,
+  //         ),
+  //       );
+  //     }
+  //     return Left(session.token);
+  //   } catch (e) {
+  //     log('$e');
+  //     return Right(Failure.fromException(e));
+  //   }
+  // }
 }
