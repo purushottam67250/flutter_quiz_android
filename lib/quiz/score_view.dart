@@ -20,6 +20,7 @@ class ScoreView extends StatelessWidget {
   int correct = 0;
   int incorrect = 0;
   int totalQuestionCount = 0;
+  int totalAnswered = 0;
 
   void _calculateScore() {
     totalQuestionCount = questions.length;
@@ -29,6 +30,11 @@ class ScoreView extends StatelessWidget {
         .length;
     incorrect = questions.length - correct;
     score = correct * pointPerCorrectQuestion;
+    totalAnswered = ((questions
+                .where((element) => element.answeredOption.isNotEmpty)
+                .length) *
+            100) ~/
+        questions.length;
   }
 
   @override
@@ -157,7 +163,7 @@ class ScoreView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '100%',
+                                  '${totalAnswered}%',
                                   style: TextStyle(
                                     color: Colors.blue[800],
                                     fontSize: 20,

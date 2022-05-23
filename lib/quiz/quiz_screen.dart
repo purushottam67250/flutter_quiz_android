@@ -137,7 +137,7 @@ class _QuizPageViewState extends State<QuizPageView> {
   }
 
   void _onQuit() {
-    //
+    Navigator.pop(context);
   }
 
   @override

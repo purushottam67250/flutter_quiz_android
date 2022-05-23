@@ -40,12 +40,14 @@ class AppRepository {
     String category,
   ) async {
     try {
+      final reqData = <String, dynamic>{
+        'categories': category.isNotEmpty ? category : null,
+        'limit': 20,
+      };
+      reqData.removeWhere((key, dynamic value) => value == null);
       final response = await _dio.get<List<dynamic>>(
         AppConstants.getQuestions,
-        queryParameters: <String, dynamic>{
-          'categories': category,
-          'limit': 20,
-        },
+        queryParameters: reqData,
       );
       final data = QuizQuestionsResponse.fromJson(response.data!);
       return Left(data.data);

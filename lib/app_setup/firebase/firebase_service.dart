@@ -70,6 +70,7 @@ class FirebaseService {
       await firestore.collection('users').doc(userId).set(<String, String>{
         'email': email,
         'displayName': displayName,
+        'userId': userId,
       });
       if (session == null) {
         return Right(
