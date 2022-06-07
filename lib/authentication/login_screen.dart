@@ -46,40 +46,52 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white.withOpacity(0.85),
-      body: Column(
-        children: [
-          Flexible(
-            child: Center(
-              child: onLogin
-                  ? Padding(
-                      padding: const EdgeInsets.all(50.0),
-                      child: Image.asset('assets/images/login.png'),
-                    )
-                  : Image.asset('assets/images/signup.png'),
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              // white card starts here
-              AppContainer(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                ),
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(30),
-                ),
-                child: onLogin
-                    ? LoginView(
-                        onToogle: _toogle,
-                      )
-                    : SignupView(
-                        onToogle: _toogle,
-                      ),
-              ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              ColorConstants.primaryBlueDark,
+              ColorConstants.primaryBlue,
             ],
+            begin: Alignment.topRight,
+            end: Alignment.centerLeft,
           ),
-        ],
+        ),
+        child: Column(
+          children: [
+            Flexible(
+              child: Center(
+                child: onLogin
+                    ? Padding(
+                        padding: const EdgeInsets.all(50.0),
+                        child: Image.asset('assets/images/login.png'),
+                      )
+                    : Image.asset('assets/images/signup.png'),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // white card starts here
+                AppContainer(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(30),
+                  ),
+                  child: onLogin
+                      ? LoginView(
+                          onToogle: _toogle,
+                        )
+                      : SignupView(
+                          onToogle: _toogle,
+                        ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
